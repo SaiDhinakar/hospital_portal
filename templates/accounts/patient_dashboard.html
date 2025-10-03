@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Patient Dashboard - Hospital Portal{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <h2>Patient Dashboard</h2>
+    
+    <div class="welcome-text">
+        Welcome, {{ user.first_name }} {{ user.last_name }}!
+    </div>
+    
+    <div style="text-align: center;">
+        {% load static %}
+        {% if user.profile_pic %}
+            <img src="{{ user.profile_pic.url }}" alt="Profile Picture" class="profile-pic" width="150" height="150" 
+                 onerror="this.onerror=null; this.src='{% static 'images/default-profile.svg' %}';">
+        {% else %}
+            <img src="{% static 'images/default-profile.svg' %}" alt="Default Profile Picture" class="profile-pic" width="150" height="150">
+        {% endif %}
+    </div>
+    
+    <div class="info-card">
+        <h3 style="margin-bottom: 15px; color: #333;">Personal Information</h3>
+        
+        <div class="info-row">
+            <span class="info-label">Name:</span>
+            <span>{{ user.first_name }} {{ user.last_name }}</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span>{{ user.email }}</span>
+        </div>
+        
+        {% if user.address_line1 %}
+        <div class="info-row">
+            <span class="info-label">Address:</span>
+            <span>{{ user.address_line1 }}, {{ user.city }}, {{ user.state }} - {{ user.pincode }}</span>
+        </div>
+        {% endif %}
+        
+        {% if user.phone_number %}
+        <div class="info-row">
+            <span class="info-label">Phone:</span>
+            <span>{{ user.phone_number }}</span>
+        </div>
+        {% endif %}
+        
+        {% if user.date_of_birth %}
+        <div class="info-row">
+            <span class="info-label">Date of Birth:</span>
+            <span>{{ user.date_of_birth }}</span>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'logout' %}" class="btn" style="width: auto; padding: 10px 30px; text-decoration: none; display: inline-block;">Logout</a>
+    </div>
+</div>
+{% endblock %}

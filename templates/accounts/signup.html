@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - Hospital Portal{% endblock %}
+
+{% block content %}
+<div class="signup-container">
+    <h2>Sign Up</h2>
+    
+    {% if form.errors %}
+        <div class="form-errors">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ field|capfirst }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-grid">
+            {% for field in form %}
+                {% if field.name == 'username' or field.name == 'email' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% elif field.name == 'password1' or field.name == 'password2' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% elif field.name == 'first_name' or field.name == 'last_name' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% elif field.name == 'city' or field.name == 'state' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% elif field.name == 'pincode' or field.name == 'user_type' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% elif field.name == 'address_line1' %}
+                    <div class="form-group full-width">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% elif field.name == 'profile_pic' %}
+                    <div class="form-group file-upload">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        <p>Choose a profile picture (optional)</p>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+        <button type="submit" class="btn">Sign Up</button>
+    </form>
+    
+    <div class="auth-links">
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
+</div>
+{% endblock %}
