@@ -1,0 +1,128 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block title %}Edit Post - {{ post.title }}{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto">
+        <!-- Navigation -->
+        <nav class="mb-6">
+            <a href="{% url 'post-detail-modify' post.pk %}" class="text-blue-600 hover:text-blue-800 font-medium">
+                ← Back to Post
+            </a>
+        </nav>
+
+        <!-- Page Header -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Edit Post</h1>
+            <p class="text-gray-600 mt-2">{{ post.title }}</p>
+        </header>
+
+        <!-- Form -->
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <!-- Title -->
+            <div>
+                <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.title.label }}
+                </label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {{ form.title.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Category -->
+            <div>
+                <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.category.label }}
+                </label>
+                {{ form.category }}
+                {% if form.category.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {{ form.category.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Current Image Display -->
+            {% if post.image %}
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Current Image</label>
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-32 h-32 object-cover rounded border">
+            </div>
+            {% endif %}
+
+            <!-- Featured Image -->
+            <div>
+                <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.image.label }}
+                </label>
+                {{ form.image }}
+                {% if form.image.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {{ form.image.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Summary -->
+            <div>
+                <label for="{{ form.summary.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.summary.label }}
+                </label>
+                {{ form.summary }}
+                {% if form.summary.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {{ form.summary.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Content -->
+            <div>
+                <label for="{{ form.content.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.content.label }}
+                </label>
+                {{ form.content }}
+                {% if form.content.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {{ form.content.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Draft Checkbox -->
+            <div class="flex items-center">
+                {{ form.is_draft }}
+                <label for="{{ form.is_draft.id_for_label }}" class="ml-2 text-sm text-gray-700">
+                    {{ form.is_draft.label }}
+                </label>
+                {% if form.is_draft.errors %}
+                    <div class="ml-2 text-sm text-red-600">
+                        {{ form.is_draft.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                <a href="{% url 'post-detail-modify' post.pk %}" 
+                   class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition duration-200">
+                    Cancel
+                </a>
+                <button type="submit" 
+                        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                    Update Post
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

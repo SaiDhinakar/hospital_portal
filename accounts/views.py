@@ -21,19 +21,8 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            if user.user_type == "patient":
-                return redirect("patient_dashboard")
-            elif user.user_type == "doctor":
-                return redirect("doctor_dashboard")
+            return redirect("dashboard")
     return render(request, "accounts/login.html")
-
-@login_required
-def patient_dashboard(request):
-    return render(request, "accounts/patient_dashboard.html", {"user": request.user})
-
-@login_required
-def doctor_dashboard(request):
-    return render(request, "accounts/doctor_dashboard.html", {"user": request.user})
 
 @login_required
 def logout_view(request):

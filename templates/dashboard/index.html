@@ -1,0 +1,81 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Latest Posts</h1>
+        {% if request.user.user_type == 'doctor' %}
+        <a href="{% url 'post-create' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+            Create New Post
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {% for post in posts %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-200">
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-48 object-cover">
+            {% endif %}
+            
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                        {{ post.get_category_display }}
+                    </span>
+                    <span class="text-sm text-gray-500">
+                        {{ post.created_at|date:"M d, Y" }}
+                    </span>
+                </div>
+                
+                <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ post.title }}</h2>
+                <p class="text-gray-600 mb-3">{{ post.summary|truncatewords:20 }}</p>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <img src="{% if post.author.profile_pic %}{{ post.author.profile_pic.url }}{% else %}{% static 'images/default-profile.svg' %}{% endif %}" 
+                             alt="{{ post.author.get_full_name }}" 
+                             class="w-8 h-8 rounded-full mr-2">
+                        <span class="text-sm text-gray-600">
+                            {% if post.author.first_name or post.author.last_name %}
+                                Dr. {{ post.author.first_name }} {{ post.author.last_name }}
+                            {% else %}
+                                Dr. {{ post.author.username }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <a href="{% url 'post-detail-modify' post.pk %}" 
+                       class="text-blue-600 hover:text-blue-800 font-medium">
+                        Read More
+                    </a>
+                </div>
+                
+                {% if not post.is_draft %}
+                <div class="mt-2">
+                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Published</span>
+                </div>
+                {% else %}
+                <div class="mt-2">
+                    <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Draft</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-12">
+            <div class="text-gray-500 text-lg">No posts available yet.</div>
+            {% if request.user.user_type == 'doctor' %}
+            <a href="{% url 'post-create' %}" class="mt-4 inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                Create the First Post
+            </a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

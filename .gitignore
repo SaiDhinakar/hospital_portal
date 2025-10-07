@@ -4,3 +4,8 @@ __pycache__/
 *.pyc
 media/
 profiles/
+.env
+.venv/
+venv/
+env/
+.env/
